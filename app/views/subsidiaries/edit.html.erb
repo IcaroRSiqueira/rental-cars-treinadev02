@@ -1,0 +1,20 @@
+<h1>Editar filial</h1>
+
+<% if @subsidiary.errors.any? %>
+  <p>Você deve corrigir os seguintes erros:</p>
+  <ul>
+  <% @subsidiary.errors.full_messages.each do |message| %>
+    <li> <%= message %> </li>
+  <% end %>
+  </ul>
+<% end %>
+
+<%= form_for @subsidiary do |f| %>
+  <%= f.label :name, 'Nome' %>
+  <%= f.text_field :name %>
+  <%= f.label :cnpj, 'CNPJ' %>
+  <%= f.text_field :cnpj %>
+  <%= f.label :address, 'Endereço' %>
+  <%= f.text_area :address %>
+  <%= f.submit 'Enviar' %>
+<% end %>

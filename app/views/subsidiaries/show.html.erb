@@ -1,0 +1,8 @@
+<h3>Nome: <%= @subsidiary.name %></h3>
+
+<p>CNPJ: <%= @subsidiary.cnpj %></p>
+<p>Endereço: <%= @subsidiary.address %> </p>
+
+<%= link_to 'Editar', edit_subsidiary_path(@subsidiary) %>
+
+<%= link_to 'Voltar', root_path %>
