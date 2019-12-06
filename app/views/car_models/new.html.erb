@@ -1,0 +1,39 @@
+<h1>Novo Modelo de Carro</h1>
+
+<% if @car_model.errors.any? %>
+  <p>Você deve corrigir os seguintes erros:</p>
+  <ul>
+  <% @car_model.errors.full_messages.each do |message| %>
+    <li> <%= message %> </li>
+  <% end %>
+  </ul>
+<% end %>
+
+
+<%= form_for @car_model do |f| %>
+<p>
+  <%= f.label :name, 'Nome' %>
+  <%= f.text_field :name %>
+</p>
+<p>
+  <%= f.label :motorization, 'Motorização' %>
+  <%= f.text_field :motorization %>
+</p>
+<p>
+  <%= f.label :year, 'Ano' %>
+  <%= f.text_field :year %>
+</p>
+<p>
+  <%= f.label :fuel_type, 'Combustível' %>
+  <%= f.text_field :fuel_type %>
+</p>
+<div>
+  <%= f.label :manufacturer_id, 'Fabricante' %>
+  <%= f.collection_select(:manufacturer_id, @manufacturers, :id, :name)%>
+</div>
+<div>
+  <%= f.label :car_category_id, 'Categoria' %>
+  <%= f.collection_select(:car_category_id, @car_categories, :id, :name)%>
+</div>
+  <%= f.submit 'Enviar' %>
+<% end %>

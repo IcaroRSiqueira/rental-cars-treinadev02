@@ -3,6 +3,8 @@
 <p>CNPJ: <%= @subsidiary.cnpj %></p>
 <p>Endereço: <%= @subsidiary.address %> </p>
 
-<%= link_to 'Editar', edit_subsidiary_path(@subsidiary) %>
+<%= link_to 'Editar', edit_subsidiary_path(@subsidiary) %><br>
+
+<%= link_to "Deletar Filial", subsidiary_path(@subsidiary), :data => {:method => "delete"} %><br>
 
 <%= link_to 'Voltar', root_path %>
