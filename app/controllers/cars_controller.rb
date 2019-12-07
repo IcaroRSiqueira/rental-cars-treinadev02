@@ -1,7 +1,7 @@
 class CarsController < ApplicationController
   before_action :authenticate_user!
   before_action :authorize_admin
-  
+
   def index
     @car = Car.all
   end
@@ -16,6 +16,12 @@ class CarsController < ApplicationController
     @subsidiaries = Subsidiary.all
   end
 
+  def edit
+    @car = Car.find(params[:id])
+    @car_models = CarModel.all
+    @subsidiaries = Subsidiary.all
+  end
+
   def create
     @car = Car.new(car_params)
     @car_models = CarModel.all
@@ -25,6 +31,24 @@ class CarsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def update
+    @car = Car.find(params[:id])
+    if @car.update(car_params)
+      flash[:notice] = 'Carro atualizado com sucesso'
+      redirect_to @car
+    else
+      @car_models = CarModel.all
+      @subsidiaries = Subsidiary.all
+      render :edit
+    end
+  end
+
+  def destroy
+    @car = Car.find(params[:id])
+    @car.destroy
+    redirect_to cars_path
   end
 
   private

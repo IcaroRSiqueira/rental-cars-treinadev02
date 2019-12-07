@@ -20,6 +20,12 @@ feature 'Admin register subsidiary' do
 
   end
 
+  scenario 'and must be logged in' do
+    visit new_subsidiary_path
+
+    expect(current_path).to eq new_user_session_path
+  end
+
   scenario 'must be admin' do
     user = User.create!(email: 'test@test.com', password: '123456')
 

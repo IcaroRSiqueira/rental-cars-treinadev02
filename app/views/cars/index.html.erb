@@ -1,3 +1,16 @@
-<h3>Carros disponíveis</h3>
+<h1>Carros disponíveis</h1>
+
+<% if @car.empty? %>
+  <p>Não existem carros cadastrados no sistema.</p>
+<% end %>
+
+<dl>
+<% @car.each do |car| %>
+  <dt> <%= link_to car.car_model.name, car %> <dt>
+  <dd> <%= car.license_plate %> </dd>
+<% end %>
+</dl>
+
+<%= link_to 'Voltar', root_path %><br>
 
 <%= link_to 'Cadastrar um carro para a frota', new_car_path %><br>

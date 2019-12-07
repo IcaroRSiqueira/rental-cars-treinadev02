@@ -1,6 +1,6 @@
 require 'rails_helper'
 #Teste AAA
-feature 'Admin view subsidiaries' do
+feature 'Admin delete subsidiaries' do
   scenario 'successfully' do
     user = User.create!(email: 'test@test.com', password: '123456', role: :admin)
 

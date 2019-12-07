@@ -6,4 +6,6 @@
 
 <%= link_to 'Editar', edit_car_category_path(@car_category) %>
 
+<%= link_to "Deletar Categoria", car_category_path(@car_category), :data => {:method => "delete"} %>
+
 <%= link_to 'Voltar', root_path %>

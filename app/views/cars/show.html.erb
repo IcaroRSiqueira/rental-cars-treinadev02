@@ -11,4 +11,9 @@
   <dt>Filial:</dt>
   <dd><%= @car.subsidiary.name %></dd>
 </dl>
+
+<%= link_to 'Editar', edit_car_path(@car) %>
+
+<%= link_to "Deletar Carro", car_path(@car), :data => {:method => "delete"} %>
+
 <%= link_to 'Voltar', root_path %>

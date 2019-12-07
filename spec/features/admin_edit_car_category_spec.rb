@@ -35,7 +35,7 @@ feature 'Admin edits car_category' do
     expect(page).to have_content('não pode ficar em branco')
   end
 
-  scenario 'Admin must fill in all fields' do
+  scenario 'must be unique' do
     user = User.create!(email: 'test@test.com', password: '123456', role: :admin)
 
     login_as(user, scope: :user)

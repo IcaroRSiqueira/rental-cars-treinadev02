@@ -7,4 +7,6 @@
 
 <%= link_to 'Editar', edit_manufacturer_path(@manufacturer) %>
 
+<%= link_to "Deletar Fabricante", manufacturer_path(@manufacturer), :data => {:method => "delete"} %>
+
 <%= link_to 'Voltar', root_path %>
