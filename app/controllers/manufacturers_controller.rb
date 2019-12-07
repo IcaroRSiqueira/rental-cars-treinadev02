@@ -1,4 +1,6 @@
 class ManufacturersController < ApplicationController
+  before_action :authenticate_user!
+  before_action :authorize_admin
   def index
     @manufacurers = Manufacturer.all
   end
@@ -40,4 +42,10 @@ class ManufacturersController < ApplicationController
     params.require(:manufacturer).permit(:name)
   end
 
+  def authorize_admin
+    unless current_user.admin?
+      flash[:notice] = 'Não autorizado'
+      redirect_to root_path
+    end
+  end
 end

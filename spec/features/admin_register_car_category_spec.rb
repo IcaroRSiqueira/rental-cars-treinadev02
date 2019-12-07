@@ -1,7 +1,11 @@
 require 'rails_helper'
 
 feature 'Admin register car category' do
+
   scenario 'successfully' do
+    user = User.create!(email: 'test@test.com', password: '123456', role: :admin)
+
+    login_as(user, scope: :user)
     visit root_path
     click_on 'Categorias de carros'
     click_on 'Registrar nova categoria de carro'
@@ -18,4 +22,15 @@ feature 'Admin register car category' do
     expect(page).to have_content('149.0')
 
   end
+
+  scenario 'must be admin' do
+    user = User.create!(email: 'test@test.com', password: '123456')
+
+    login_as(user, scope: :user)
+    visit root_path
+    click_on 'Categorias de carros'
+
+    expect(page).to have_content('Não autorizado')
+  end
+
 end

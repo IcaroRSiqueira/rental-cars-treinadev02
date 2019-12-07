@@ -1,4 +1,7 @@
 class CarModelsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :authorize_admin
+
   def index
   end
 
@@ -30,4 +33,12 @@ class CarModelsController < ApplicationController
     params.require(:car_model).permit(:name, :year, :motorization, :fuel_type,
                                       :car_category_id, :manufacturer_id)
   end
+
+  def authorize_admin
+    unless current_user.admin?
+      flash[:notice] = 'Não autorizado'
+      redirect_to root_path
+    end
+  end
+
 end

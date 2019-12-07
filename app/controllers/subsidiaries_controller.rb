@@ -1,4 +1,6 @@
 class SubsidiariesController < ApplicationController
+  before_action :authenticate_user!
+  before_action :authorize_admin
   def index
     @subsidiaries = Subsidiary.all
   end
@@ -45,4 +47,12 @@ class SubsidiariesController < ApplicationController
   def subsidiary_params
     params.require(:subsidiary).permit(:name, :cnpj, :address)
   end
+
+  def authorize_admin
+    unless current_user.admin?
+      flash[:notice] = 'Não autorizado'
+      redirect_to root_path
+    end
+  end
+
 end

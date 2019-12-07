@@ -2,12 +2,15 @@ require 'rails_helper'
 
 feature 'Admin register car' do
   scenario 'successfully' do
+    user = User.create!(email: 'test@test.com', password: '123456', role: :admin)
 
-  Subsidiary.create(name: 'Pompeia', cnpj: '12.345.678/9012-34', address: 'Av. Pompeia, Número 200, São Paulo, SP')
-  manufacturer = Manufacturer.create(name: 'Chevrolet')
-  car_category = CarCategory.create(name: 'A', daily_rate: 100, car_insurance: 50,
+    login_as(user, scope: :user)
+
+    Subsidiary.create(name: 'Pompeia', cnpj: '12.345.678/9012-34', address: 'Av. Pompeia, Número 200, São Paulo, SP')
+    manufacturer = Manufacturer.create(name: 'Chevrolet')
+    car_category = CarCategory.create(name: 'A', daily_rate: 100, car_insurance: 50,
                                     third_party_insurance: 90)
-  CarModel.create!(name: 'Onix', year: 2015, fuel_type: 'Flex', motorization: 1.0,
+    CarModel.create!(name: 'Onix', year: 2015, fuel_type: 'Flex', motorization: 1.0,
                    manufacturer: manufacturer, car_category: car_category)
     visit root_path
 
@@ -29,7 +32,10 @@ feature 'Admin register car' do
 
   end
 
-    scenario 'admin must fill all fields' do
+  scenario 'admin must fill all fields' do
+    user = User.create!(email: 'test@test.com', password: '123456', role: :admin)
+
+    login_as(user, scope: :user)
 
     Subsidiary.create(name: 'Pompeia', cnpj: '12.345.678/9012-34', address: 'Av. Pompeia, Número 200, São Paulo, SP')
     manufacturer = Manufacturer.create(name: 'Chevrolet')
@@ -37,79 +43,89 @@ feature 'Admin register car' do
                                       third_party_insurance: 90)
     CarModel.create!(name: 'Onix', year: 2015, fuel_type: 'Flex', motorization: 1.0,
                      manufacturer: manufacturer, car_category: car_category)
-      visit root_path
+    visit root_path
 
-      click_on 'Carros disponíveis'
-      click_on 'Cadastrar um carro para a frota'
+    click_on 'Carros disponíveis'
+    click_on 'Cadastrar um carro para a frota'
 
-      fill_in 'Placa', with: ''
-      fill_in 'Cor', with: ''
-      select 'Onix', from: 'Modelo'
-      fill_in 'Quilometragem', with: 1000
-      select 'Pompeia', from: 'Filial'
-      click_on 'Enviar'
+    fill_in 'Placa', with: ''
+    fill_in 'Cor', with: ''
+    select 'Onix', from: 'Modelo'
+    fill_in 'Quilometragem', with: 1000
+    select 'Pompeia', from: 'Filial'
+    click_on 'Enviar'
 
-      expect(page).to have_content('não pode ficar em branco')
-
-
-    end
+    expect(page).to have_content('não pode ficar em branco')
+  end
 
 
-    scenario 'plate must be unique' do
+  scenario 'plate must be unique' do
+    user = User.create!(email: 'test@test.com', password: '123456', role: :admin)
 
-      Subsidiary.create(name: 'Pompeia', cnpj: '12.345.678/9012-34', address: 'Av. Pompeia, Número 200, São Paulo, SP')
-      subsidiary = Subsidiary.create(name: 'Siqueira Cars', cnpj: '13.445.658/6072-38', address: 'Av. Pres Vargas, Número 200, São Paulo, SP')
+    login_as(user, scope: :user)
 
-      manufacturer = Manufacturer.create(name: 'Chevrolet')
-      car_category = CarCategory.create(name: 'A', daily_rate: 100, car_insurance: 50,
-                                        third_party_insurance: 90)
-      CarModel.create(name: 'Onix', year: 2015, fuel_type: 'Flex', motorization: 1.0,
-                      manufacturer: manufacturer, car_category: car_category)
-      car_model = CarModel.create(name: 'Corsa', year: 2015, fuel_type: 'Flex', motorization: 1.0,
-                                  manufacturer: manufacturer, car_category: car_category)
+    Subsidiary.create(name: 'Pompeia', cnpj: '12.345.678/9012-34', address: 'Av. Pompeia, Número 200, São Paulo, SP')
+    subsidiary = Subsidiary.create(name: 'Siqueira Cars', cnpj: '13.445.658/6072-38', address: 'Av. Pres Vargas, Número 200, São Paulo, SP')
 
-      Car.create!(license_plate: 'AAA-0000', color: 'Vermelho', mileage: 250, car_model: car_model, subsidiary: subsidiary)
+    manufacturer = Manufacturer.create(name: 'Chevrolet')
+    car_category = CarCategory.create(name: 'A', daily_rate: 100, car_insurance: 50,
+                                      third_party_insurance: 90)
+    CarModel.create(name: 'Onix', year: 2015, fuel_type: 'Flex', motorization: 1.0,
+                    manufacturer: manufacturer, car_category: car_category)
+    car_model = CarModel.create(name: 'Corsa', year: 2015, fuel_type: 'Flex', motorization: 1.0,
+                                manufacturer: manufacturer, car_category: car_category)
 
-      visit root_path
+    Car.create!(license_plate: 'AAA-0000', color: 'Vermelho', mileage: 250, car_model: car_model, subsidiary: subsidiary)
 
-      click_on 'Carros disponíveis'
-      click_on 'Cadastrar um carro para a frota'
+    visit root_path
 
-      fill_in 'Placa', with: 'AAA-0000'
-      fill_in 'Cor', with: 'Branco'
-      select 'Onix', from: 'Modelo'
-      fill_in 'Quilometragem', with: 1000
-      select 'Pompeia', from: 'Filial'
-      click_on 'Enviar'
+    click_on 'Carros disponíveis'
+    click_on 'Cadastrar um carro para a frota'
 
-      expect(page).to have_content('já está em uso')
+    fill_in 'Placa', with: 'AAA-0000'
+    fill_in 'Cor', with: 'Branco'
+    select 'Onix', from: 'Modelo'
+    fill_in 'Quilometragem', with: 1000
+    select 'Pompeia', from: 'Filial'
+    click_on 'Enviar'
 
+    expect(page).to have_content('já está em uso')
+  end
 
-    end
+  scenario 'mileage must be >0' do
+    user = User.create!(email: 'test@test.com', password: '123456', role: :admin)
 
-    scenario 'mileage must be >0' do
+    login_as(user, scope: :user)
 
     Subsidiary.create(name: 'Pompeia', cnpj: '12.345.678/9012-34', address: 'Av. Pompeia, Número 200, São Paulo, SP')
     manufacturer = Manufacturer.create(name: 'Chevrolet')
     car_category = CarCategory.create(name: 'A', daily_rate: 100, car_insurance: 50,
                                       third_party_insurance: 90)
     CarModel.create!(name: 'Onix', year: 2015, fuel_type: 'Flex', motorization: 1.0,
-                     manufacturer: manufacturer, car_category: car_category)
-      visit root_path
+                    manufacturer: manufacturer, car_category: car_category)
+    visit root_path
 
-      click_on 'Carros disponíveis'
-      click_on 'Cadastrar um carro para a frota'
+    click_on 'Carros disponíveis'
+    click_on 'Cadastrar um carro para a frota'
 
-      fill_in 'Placa', with: 'CRS-3863'
-      fill_in 'Cor', with: ''
-      select 'Onix', from: 'Modelo'
-      fill_in 'Quilometragem', with: 0
-      select 'Pompeia', from: 'Filial'
-      click_on 'Enviar'
+    fill_in 'Placa', with: 'CRS-3863'
+    fill_in 'Cor', with: ''
+    select 'Onix', from: 'Modelo'
+    fill_in 'Quilometragem', with: 0
+    select 'Pompeia', from: 'Filial'
+    click_on 'Enviar'
 
-      expect(page).to have_content('must be greater than 0')
+    expect(page).to have_content('must be greater than 0')
+  end
 
+  scenario 'must be admin' do
+    user = User.create!(email: 'test@test.com', password: '123456')
 
-    end
+    login_as(user, scope: :user)
+    visit root_path
+    click_on 'Carros disponíveis'
+
+    expect(page).to have_content('Não autorizado')
+  end
 
 end

@@ -2,6 +2,9 @@ require 'rails_helper'
 
 feature 'Admin register car model' do
   scenario 'successfully' do
+    user = User.create!(email: 'test@test.com', password: '123456', role: :admin)
+
+    login_as(user, scope: :user)
     Manufacturer.create!(name: 'Chevrolet')
     Manufacturer.create!(name: 'Honda')
     CarCategory.create!(name: 'A', daily_rate: 100, car_insurance: 50,
@@ -31,6 +34,9 @@ feature 'Admin register car model' do
   end
 
   scenario 'Admin must fill all fields' do
+    user = User.create!(email: 'test@test.com', password: '123456', role: :admin)
+
+    login_as(user, scope: :user)
     Manufacturer.create!(name: 'Chevrolet')
     CarCategory.create!(name: 'A', daily_rate: 100, car_insurance: 50,
                         third_party_insurance: 90)
@@ -54,6 +60,9 @@ feature 'Admin register car model' do
   end
 
   scenario 'Admin must fill all fields' do
+    user = User.create!(email: 'test@test.com', password: '123456', role: :admin)
+
+    login_as(user, scope: :user)
     manufacturer = Manufacturer.create(name: 'Chevrolet')
     car_category = CarCategory.create(name: 'A', daily_rate: 100, car_insurance: 50,
                                       third_party_insurance: 90)
@@ -74,6 +83,16 @@ feature 'Admin register car model' do
     click_on 'Enviar'
 
     expect(page).to have_content('já está em uso')
+  end
+
+  scenario 'must be admin' do
+    user = User.create!(email: 'test@test.com', password: '123456')
+
+    login_as(user, scope: :user)
+    visit root_path
+    click_on 'Modelos de Carro'
+
+    expect(page).to have_content('Não autorizado')
   end
 
 end

@@ -1,4 +1,6 @@
 class CarCategoriesController < ApplicationController
+  before_action :authenticate_user!
+  before_action :authorize_admin
   def index
     @car_categories = CarCategory.all
   end
@@ -39,4 +41,12 @@ class CarCategoriesController < ApplicationController
   def car_category_params
     params.require(:car_category).permit(:name, :daily_rate, :car_insurance, :third_party_insurance)
   end
+
+  def authorize_admin
+    unless current_user.admin?
+      flash[:notice] = 'Não autorizado'
+      redirect_to root_path
+    end
+  end
+
 end

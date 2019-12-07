@@ -2,6 +2,9 @@ require 'rails_helper'
 #Teste AAA
 feature 'Visitor view car categories' do
   scenario 'successfully' do
+    user = User.create!(email: 'test@test.com', password: '123456', role: :admin)
+
+    login_as(user, scope: :user)
 #Arrange
     CarCategory.create(name: 'Esportivo Utilitário', daily_rate: 12.3, car_insurance: 45.6, third_party_insurance: 67.8)
 #Act
@@ -16,6 +19,9 @@ feature 'Visitor view car categories' do
   end
 
   scenario 'and car categories are not registered' do
+    user = User.create!(email: 'test@test.com', password: '123456', role: :admin)
+
+    login_as(user, scope: :user)
     visit root_path
     click_on 'Categorias de carros'
   expect(page).to have_content('Não existem categorias de carros cadastradas no sistema')
