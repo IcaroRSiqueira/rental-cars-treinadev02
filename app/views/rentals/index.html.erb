@@ -1,0 +1,13 @@
+<h1>Locações</h1>
+
+<% @rentals.each do |rental| %>
+  <%= link_to rental.reservation_code, rental %>
+<% end %>
+
+<%= link_to 'Agendar Locação', new_rental_path %>
+
+<%= form_with(url: search_rentals_path, local: true, method: :get) do %>
+  <%= label_tag :q, 'Código' %>
+  <%= text_field_tag :q %>
+  <%= submit_tag 'Buscar' %>
+<% end %>

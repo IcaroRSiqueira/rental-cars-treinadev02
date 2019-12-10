@@ -1,5 +1,5 @@
 class Subsidiary < ApplicationRecord
   validates :name, :cnpj, :address, presence: {message: 'não pode ficar em branco'}
   validates :name, :cnpj, :address, uniqueness: {message: 'já está em uso'}
-  has_many :cars
+  has_many :cars, dependent: :destroy
 end

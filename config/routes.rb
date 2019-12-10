@@ -7,4 +7,8 @@ Rails.application.routes.draw do
   resources :clients, only: [:index, :show, :new, :create]
   resources :car_models
   resources :cars
+  resources :rentals do
+    post 'start', on: :member
+    get 'search', on: :collection
+  end
 end

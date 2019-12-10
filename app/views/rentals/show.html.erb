@@ -1,0 +1,13 @@
+<h3>Status da locação: <%= @rental.status %></h3>
+<p>Código da locação: <%= @rental.reservation_code %></p>
+<p>Data de início: <%= @rental.start_date.strftime('%d/%m/%Y') %> </p>
+<p>Data de fim: <%= @rental.end_date.strftime('%d/%m/%Y') %> </p>
+<h3>Cliente</h3>
+<p><%= @rental.client.name %></p>
+<p><%= @rental.client.document %></p>
+<h3>Categoria</h3>
+<p><%= @rental.car_category.name %> </p>
+
+<% unless @rental.in_progress? %>
+  <%= link_to "Iniciar Locação", start_rental_path(@rental), :data => {:method => "post"} %>
+<% end %>

@@ -3,5 +3,5 @@ class CarModel < ApplicationRecord
   validates :name, uniqueness: {message: 'já está em uso'}
   belongs_to :manufacturer
   belongs_to :car_category
-  has_many :car
+  has_many :car, dependent: :destroy
 end
